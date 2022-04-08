@@ -1,0 +1,37 @@
+Sub JumbleArray()
+Dim A(), B() As Variant, temp, n, m As Integer
+Dim i, j, h, r As Integer
+
+n = Selection.Rows.Count
+m = Selection.Columns.Count
+
+ReDim B(n * m)
+
+A = Selection
+h = 1
+
+For i = 1 To n
+    For j = 1 To m
+        B(h) = A(i, j)
+        h = h + 1
+    Next j
+Next i
+
+
+For j = 1 To n * m:
+    r = WorksheetFunction.RandBetween(1, n * m - j + 1)
+    temp = B(r)
+    B(r) = B(n * m - j + 1)
+    B(n * m - j + 1) = temp
+Next j
+
+h = 1
+For i = 1 To n
+    For j = 1 To m
+        A(i, j) = B(h)
+        h = h + 1
+    Next j
+Next i
+
+Selection = A
+End Sub
