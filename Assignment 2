@@ -1,0 +1,29 @@
+Option Explicit
+Option Base 1
+
+Sub SearchForString()
+
+Dim n, m, i, j, h, lensubs As Integer
+Dim subs As String
+Dim A() As Variant
+
+n = Selection.Rows.Count
+m = Selection.Columns.Count
+
+ReDim A(n, m)
+A = Selection
+subs = InputBox("Enter a sub")
+lensubs = Len(subs)
+
+h = 1
+For i = 1 To n
+    For j = 1 To m
+      If InStr(A(i, j), subs) Then
+        Range("E" & h) = A(i, j)
+        Range("F" & h) = i
+        Range("G" & h) = j
+        h = h + 1
+      End If
+    Next j
+ Next i
+End Sub
