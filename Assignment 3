@@ -1,0 +1,30 @@
+Sub RalphieReactor()
+
+Dim folder As String, Filename As String
+Dim twb As Workbook, awb As Workbook
+Dim A() As Variant
+Dim B() As Variant
+Dim i, j, h As Integer
+
+h = 1
+ReDim A(4)
+ReDim B(4)
+Set twb = ThisWorkbook
+folder = "C:\Users\user\Desktop\Grader Files"
+Filename = Dir(folder & "\*.csv")
+Do
+    Workbooks.Open folder & "\" & Filename
+    Set awb = ActiveWorkbook
+    awb.Sheets(1).Range("B3:B6").Copy twb.Sheets(4).Range("A" & h)
+    twb.Sheets(4).Range("A" & h) = twb.Sheets(4).Range("A" & h)
+    twb.Sheets(4).Range("B" & h) = twb.Sheets(4).Range("A" & h + 1)
+    twb.Sheets(4).Range("A" & h + 1).Clear
+    twb.Sheets(4).Range("C" & h) = twb.Sheets(4).Range("A" & h + 2)
+    twb.Sheets(4).Range("A" & h + 2).Clear
+    twb.Sheets(4).Range("D" & h) = twb.Sheets(4).Range("A" & h + 3)
+    twb.Sheets(4).Range("A" & h + 3).Clear
+    awb.Close Savechanges:=False
+    Filename = Dir
+    h = h + 1
+Loop Until Filename = ""
+End Sub
