@@ -1,0 +1,62 @@
+Option Explicit
+Sub RunForm()
+PopulateComboBox
+NameForm.Show
+End Sub
+
+Sub PopulateComboBox()
+Dim n, i As Integer
+
+n = ActiveWorkbook.Sheets(1).Cells(Rows.Count, 1).End(xlUp).Row
+
+For i = 1 To n
+    NameForm.ComboBox1.AddItem ActiveWorkbook.Sheets(1).Cells(i, 1)
+    
+Next i
+NameForm.ComboBox1.Text = Range("A1")
+
+End Sub
+
+Sub AddName()
+Dim nRows As Integer, i As Integer, pn As String
+Dim n As Integer
+Dim num As String
+
+n = ActiveWorkbook.Sheets(1).Cells(Rows.Count, 1).End(xlUp).Row
+'Input validation
+If NameForm.NewName = "" Then
+    MsgBox "Name field cannot be left blank!"
+    Exit Sub
+End If
+ActiveWorkbook.Sheets(1).Range("A" & n + 1) = NameForm.NewName
+NameForm.ComboBox1.AddItem NameForm.NewName
+num = InputBox("num")
+ActiveWorkbook.Sheets(1).Range("B" & n + 1) = num
+'Place your code here!
+
+End Sub
+
+Sub DeleteItem()
+Dim Index As Integer, Ans As Integer
+Dim n, temp As Integer
+n = ActiveWorkbook.Sheets(1).Cells(Rows.Count, 1).End(xlUp).Row
+Ans = MsgBox("Are you sure you want to delete this record?!", 20)
+If Ans = 6 Then
+    temp = NameForm.ComboBox1.ListIndex
+    NameForm.ComboBox1.RemoveItem temp
+    Rows(temp + 1 & ":" & temp + 1).Select
+    Selection.Delete shift:=xlUp
+End If
+Range("A1").Select
+NameForm.ComboBox1.Value = Range("A1")
+End Sub
+
+Sub UpdateNumber()
+Dim Ans As String, Index As Integer
+Ans = InputBox("What is " & NameForm.ComboBox1.Value & "'s new phone number?")
+If Ans <> "" Then 'Protects against empty input OR cancel button
+    Index = NameForm.ComboBox1.ListIndex
+    ActiveWorkbook.Sheets(1).Cells(Index + 1, 2) = Ans
+End If
+End Sub
+
